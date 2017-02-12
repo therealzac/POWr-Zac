@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "powruser",
+    "password": null,
+    "database": "powr_comments_onboarding_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "powruser",
+    "password": null,
+    "database": "powr_comments_onboarding_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "powruser",
+    "password": null,
+    "database": "powr_comments_onboarding_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

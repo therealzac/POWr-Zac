@@ -2,43 +2,45 @@ import { connect } from 'react-redux'
 import React from 'react';
 import $ from 'jquery';
 
-const Login = React.createClass({
+
+const Signup = React.createClass({
   getInitialState() {
-    return { Email: '', Password: '' }
+    return { Email: '', Password: '', ConfirmPassword: '' }
   },
   updateProperty(e) {
     this.state[e.target.placeholder] = e.target.value
     this.setState(this.state)
   },
-  login() {
-    this.props.login(this.state)
+  signup() {
+    if (this.state.Password === this.state.ConfirmPassword) {
+      this.props.signup(this.state)
+    }
   },
   render() {
     return (
       <div>
-        <h2>Login</h2>
+        <h2>Signup</h2>
         <input type='text' onChange={this.updateProperty} placeholder='Email'/>
         <input type='password' onChange={this.updateProperty} placeholder='Password'/>
-        <button onClick={this.login}>Let's go!</button>
-        <p>Don't have an account yet? <a href='#/signup/'>Sign Up</a>.</p>
+        <input type='password' onChange={this.updateProperty} placeholder='ConfirmPassword'/>
+        <button onClick={this.signup}>Lets go!</button>
+        <p>Already have an account? <a href='#/'>Log In</a>.</p>
       </div>
     )
   }
 })
 
 const mapStateToProps = ( state, props ) => {
-    return {
-      ...state.Application
-    }
+    return { ...state.Application }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (loginData) => {
+    signup: (signupData) => {
       $.ajax({
-        url: '/login/',
+        url: '/register/',
         method: 'POST',
-        data: loginData,
+        data: signupData
       }).done((response) => {
         console.log(response)
       }).fail((error) => {
@@ -48,10 +50,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 }
 
-const LoginContainer = connect(
+const SignupContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login)
+)(Signup)
 
 
-module.exports = LoginContainer;
+module.exports = SignupContainer;

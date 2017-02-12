@@ -3,13 +3,16 @@ const colors             = require('colors');
 const figlet             = Promise.promisify(require('figlet'));
 const morgan             = require('morgan');
 const express            = require("express");
+const passport           = require('passport');
+const authHelpers        = require('./auth/_helpers')
+const authRoutes         = require('./auth/routes')
 const db                 = require('../../models');//Bootstraps the entire database.
 const bodyParser         = require('body-parser');
 const app                = express();
 const path               = require('path');
 const serveStatic        = express.static;
 const PORT               = 8080;
-const middlwareError     = 'You made it to the no-no middleware. If you\'re confused, see:http://expressjs.com/en/guide/using-middleware.html';
+const middlwareError     = 'Unable to find route.';
 const IS_PRODUCTION      = false;
 const introAscii         = '   POWr';
 const introAscii2        = 'Comments';
@@ -25,7 +28,7 @@ figlet(introAscii,{font:asciiFont})
 })
 .then(nothing =>{
   db.sequelize
-    .sync()
+    .sync({force: true})
     .then(()=>{
 
       if (!IS_PRODUCTION) require('./bundler.js')(app); //Webpack
@@ -42,10 +45,44 @@ figlet(introAscii,{font:asciiFont})
 
       app.use(serveStatic(path.join(__dirname,"../../dist")));
 
-      app.use(function(req,res,next){// If you get here, then nothing was able to field the request.
+      app.use(passport.initialize())
+      app.use(passport.session())
+
+      app.post('/register', (req, res, next)  => {
+        return authHelpers.createUser(req, res)
+        .then((response) => {
+          passport.authenticate('local', (err, user, info) => {
+            if (user) { handleResponse(res, 201, 'success'); }
+          })(req, res, next);
+        })
+        .catch((err) => { handleResponse(res, 500, 'error'); });
+      });
+
+      app.post('/login', (req, res, next) => {
+        passport.authenticate('local', (err, user, info) => {
+          if (err) { handleResponse(res, 500, 'error'); }
+          if (!user) { handleResponse(res, 404, 'User not found'); }
+          if (user) {
+            req.logIn(user, function (err) {
+              if (err) { handleResponse(res, 500, 'error'); }
+              handleResponse(res, 200, 'success');
+            });
+          }
+        })(req, res, next);
+      });
+
+      app.get('/logout', (req, res, next) => {
+        req.logout();
+        handleResponse(res, 200, 'success');
+      });
+
+      function handleResponse(res, code, statusMsg) {
+        res.status(code).json({status: statusMsg});
+      }
+
+      app.use(function(req,res,next){
         res.send(JSON.stringify({
-          success:false,
-          data:middlwareError
+          error: middlwareError
         }))
       });
 
@@ -55,6 +92,3 @@ figlet(introAscii,{font:asciiFont})
     }
   );
 })
-
-
-

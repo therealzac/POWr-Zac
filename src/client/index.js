@@ -19,7 +19,7 @@ import {
 
 import {
         logger,
-        thunk
+        crashReporter
       }                       from 'Middleware';
 
 import {
@@ -27,16 +27,18 @@ import {
 } from 'Actions';
 
 
-import App                   from 'Containers/ApplicationContainer'
+import App                   from 'Components/Application'
 import Login                 from 'Components/Login'
+import Signup                from 'Components/Signup'
 
 const store = createStore(
   combineReducers({
     Application,
     routing: routerReducer
   }),
-  // applyMiddleware(thunk) see: http://redux.js.org/docs/advanced/Middleware.html
+  applyMiddleware(logger, crashReporter)
 );
+
 
 const history = syncHistoryWithStore(hashHistory, store);
 
@@ -54,6 +56,7 @@ render(
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Login}/>
+        <Route path="/signup" component={Signup}/>
       </Route>
     </Router>
   </Provider>,

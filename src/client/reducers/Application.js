@@ -1,12 +1,12 @@
 const initialState = {
-    TOTALLY_SILLY_STATE:'Hello World'
+    posts: []
 };
 const Application = (state=initialState, action) =>  {
   switch (action.type){
-  case 'SOMETHING':
-    return state;
-  default:
-      return state
+    case 'ADD_POST':
+      return state;
+    default:
+        return state
   }
 }
 export default Application;
