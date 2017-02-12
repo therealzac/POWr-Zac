@@ -1,6 +1,14 @@
-import React from 'react';
-export default ApplicationComponent;
+import React from 'react'
 
-function ApplicationComponent(){
-    return <div>Im a the default component. Make me awesome.</div>
-}
+const ApplicationComponent = React.createClass({
+  render: function() {
+    return (
+      <div>
+        <div>Waddap</div>
+        {this.props.children}
+      </div>
+    )
+  }
+})
+
+module.exports = ApplicationComponent;

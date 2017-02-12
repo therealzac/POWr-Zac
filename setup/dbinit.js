@@ -8,10 +8,10 @@
 var colors    = require('colors');
 var Sequelize = require('sequelize');
 var pg        = require('pg');
-
+p
 var doThing = function(conf) {
     var dbName     = 'powr_comments_onboarding_db',
-        username   = 'postgres',
+        username   = 'powruser',
         password   = '',
         host       = 'localhost',
         testDbName = dbName + 'test'

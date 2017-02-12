@@ -28,6 +28,7 @@ import {
 
 
 import App                   from 'Containers/ApplicationContainer'
+import Login                 from 'Components/Login'
 
 const store = createStore(
   combineReducers({
@@ -52,6 +53,7 @@ render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
+        <IndexRoute component={Login}/>
       </Route>
     </Router>
   </Provider>,
