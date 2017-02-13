@@ -6,13 +6,13 @@ const authHelpers = require('./_helpers');
 // const knex = require('../db/connection');
 
 const options = {};
-const User = require('../../../models/user')
+const models = require('../../../models/index')
 
 init();
 
 passport.use(new LocalStrategy(options, (email, password, done) => {
   // check to see if the user exists
-  User.find({ where: { email: email } })
+  models.User.find({ where: { email: email } })
   .then((user) => {
     if (!user) return done(null, false);
     if (!authHelpers.comparePass(password, user.password)) {

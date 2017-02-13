@@ -33,20 +33,7 @@ import Login                 from 'Components/Login'
 import Signup                from 'Components/Signup'
 const configureStore = require('./utils/configureStore')
 
-// const middleWare = [thunk, routerMiddleware(history)]
-//
-// const store = createStore(
-//   combineReducers({
-//     Application,
-//     routing: routerReducer
-//   }),
-//   applyMiddleware(logger, crashReporter)
-// );
-
-
-// const history = syncHistoryWithStore(hashHistory, store);
-
-const store = configureStore({posts: []}, hashHistory);
+const store = configureStore({}, browserHistory);
 
 (function() {
     // window.debug = true;

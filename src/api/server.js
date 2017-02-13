@@ -17,6 +17,7 @@ const IS_PRODUCTION      = false;
 const introAscii         = '   POWr';
 const introAscii2        = 'Comments';
 const asciiFont          = 'Isometric2';
+const models = require('../../models/index')
 
 figlet(introAscii,{font:asciiFont})
 .then(introMessage => {
@@ -28,7 +29,7 @@ figlet(introAscii,{font:asciiFont})
 })
 .then(nothing =>{
   db.sequelize
-    .sync({force: true})
+    .sync()
     .then(()=>{
 
       if (!IS_PRODUCTION) require('./bundler.js')(app); //Webpack
@@ -58,17 +59,30 @@ figlet(introAscii,{font:asciiFont})
         .catch((err) => { handleResponse(res, 500, 'error'); });
       });
 
+      // app.post('/login', (req, res, next) => {
+      //   passport.authenticate('local', (err, user, info) => {
+      //     if (err) { handleResponse(res, 500, 'error'); }
+      //     if (!user) { handleResponse(res, 404, 'User not found'); }
+      //     if (user) {
+      //       req.logIn(user, function (err) {
+      //         if (err) { handleResponse(res, 500, 'error'); }
+      //         handleResponse(res, 200, 'success');
+      //       });
+      //     }
+      //   })(req, res, next);
+      // });
+
       app.post('/login', (req, res, next) => {
-        passport.authenticate('local', (err, user, info) => {
-          if (err) { handleResponse(res, 500, 'error'); }
-          if (!user) { handleResponse(res, 404, 'User not found'); }
-          if (user) {
-            req.logIn(user, function (err) {
-              if (err) { handleResponse(res, 500, 'error'); }
-              handleResponse(res, 200, 'success');
-            });
+        models.User.find({ where: { email: req.body.Email } })
+        .then((user) => {
+          if (!user) handleResponse(res, 404, 'User not found');
+          if (!authHelpers.comparePass(req.body.Password, user.password)) {
+            handleResponse(res, 404, 'Wrong credentials');
+          } else {
+            return handleResponse(res, 200, 'success');
           }
-        })(req, res, next);
+        })
+        .catch((err) => { handleResponse(res, 500, err.message) });
       });
 
       app.get('/logout', (req, res, next) => {
@@ -77,7 +91,7 @@ figlet(introAscii,{font:asciiFont})
       });
 
       function handleResponse(res, code, statusMsg) {
-        res.status(code).json({status: statusMsg});
+        res.status(code).json({message: statusMsg});
       }
 
       app.use(function(req,res,next){

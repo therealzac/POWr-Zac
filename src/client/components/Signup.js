@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react';
-import $ from 'jquery';
-import actions from '../actions/index'
+import { signUp } from '../actions/index'
+import { browserHistory } from 'react-router'
 
 
 const Signup = React.createClass({
@@ -14,8 +14,11 @@ const Signup = React.createClass({
   },
   signup() {
     if (this.state.Password === this.state.ConfirmPassword) {
-      this.props.signup(this.state)
+      this.props.signUp(this.state)
     }
+  },
+  goToLogin() {
+    browserHistory.push('/')
   },
   render() {
     return (
@@ -25,27 +28,19 @@ const Signup = React.createClass({
         <input type='password' onChange={this.updateProperty} placeholder='Password'/>
         <input type='password' onChange={this.updateProperty} placeholder='ConfirmPassword'/>
         <button onClick={this.signup}>Lets go!</button>
-        <p>Already have an account? <a href='#/'>Log In</a>.</p>
+        <p>Already have an account? <a onClick={this.goToLogin}>Log In</a>.</p>
       </div>
     )
   }
 })
 
-const mapStateToProps = ( state, props ) => {
-    return { ...state.Application }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signup: (signupData) => {
-      actions.signUp(signUpData)
-    }
-  };
+const mapStateToProps = ( {user} ) => {
+    return { user }
 }
 
 const SignupContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  { signUp }
 )(Signup)
 
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react';
+import { browserHistory } from 'react-router'
 import { PropTypes } from 'react';
-import $ from 'jquery';
 import { manualLogin } from '../actions/index'
 
 const Login = React.createClass({
@@ -15,6 +15,9 @@ const Login = React.createClass({
   login() {
     this.props.manualLogin(this.state)
   },
+  goToSignup() {
+    browserHistory.push('/signup')
+  },
   render() {
     return (
       <div>
@@ -22,7 +25,7 @@ const Login = React.createClass({
         <input type='text' onChange={this.updateProperty} placeholder='Email'/>
         <input type='password' onChange={this.updateProperty} placeholder='Password'/>
         <button onClick={this.login}>Let's go!</button>
-        <p>Don't have an account yet? <a href='#/signup/'>Sign Up</a>.</p>
+        <p>Don't have an account yet? <a onClick={this.goToSignup}>Sign Up</a>.</p>
       </div>
     )
   }
