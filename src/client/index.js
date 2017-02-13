@@ -1,6 +1,6 @@
 import React                  from 'react';
 import { Provider }           from 'react-redux';
-import Application            from 'Reducers/Application';
+import Application            from 'Reducers/index';
 import Promise                from 'promise-polyfill';
 import { ReactDOM,
          render }             from 'react-dom';
@@ -15,7 +15,8 @@ import { Router,
 
 import {
   syncHistoryWithStore,
-  routerReducer }             from 'react-router-redux'
+  routerReducer,
+  routerMiddleware }          from 'react-router-redux'
 
 import {
         logger,
@@ -30,17 +31,22 @@ import {
 import App                   from 'Components/Application'
 import Login                 from 'Components/Login'
 import Signup                from 'Components/Signup'
+const configureStore = require('./utils/configureStore')
 
-const store = createStore(
-  combineReducers({
-    Application,
-    routing: routerReducer
-  }),
-  applyMiddleware(logger, crashReporter)
-);
+// const middleWare = [thunk, routerMiddleware(history)]
+//
+// const store = createStore(
+//   combineReducers({
+//     Application,
+//     routing: routerReducer
+//   }),
+//   applyMiddleware(logger, crashReporter)
+// );
 
 
-const history = syncHistoryWithStore(hashHistory, store);
+// const history = syncHistoryWithStore(hashHistory, store);
+
+const store = configureStore({posts: []}, hashHistory);
 
 (function() {
     // window.debug = true;
@@ -53,7 +59,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 render(
   <Provider store={store}>
-    <Router history={history}>
+    <Router history={browserHistory}>
       <Route path="/" component={App}>
         <IndexRoute component={Login}/>
         <Route path="/signup" component={Signup}/>

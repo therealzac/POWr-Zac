@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import React from 'react';
+import { PropTypes } from 'react';
 import $ from 'jquery';
+import { manualLogin } from '../actions/index'
 
 const Login = React.createClass({
   getInitialState() {
@@ -11,7 +13,7 @@ const Login = React.createClass({
     this.setState(this.state)
   },
   login() {
-    this.props.login(this.state)
+    this.props.manualLogin(this.state)
   },
   render() {
     return (
@@ -26,32 +28,18 @@ const Login = React.createClass({
   }
 })
 
-const mapStateToProps = ( state, props ) => {
-    return {
-      ...state.Application
-    }
-}
+Login.propTypes = {
+  user: PropTypes.object,
+  manualLogin: PropTypes.func.isRequired,
+};
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (loginData) => {
-      $.ajax({
-        url: '/login/',
-        method: 'POST',
-        data: loginData,
-      }).done((response) => {
-        console.log(response)
-      }).fail((error) => {
-        console.log(error)
-      })
-    }
-  };
+const mapStateToProps = ( {user} ) => {
+    return {user}
 }
 
 const LoginContainer = connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Login)
-
+  { manualLogin }
+)(Login);
 
 module.exports = LoginContainer;

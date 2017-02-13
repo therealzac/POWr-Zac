@@ -10,12 +10,6 @@ const crashReporter = store => next => action => {
     return next(action)
   } catch (err) {
     console.error('Blast!', err)
-    Raven.captureException(err, {
-      extra: {
-        action,
-        state: store.getState()
-      }
-    })
     throw err
   }
 }

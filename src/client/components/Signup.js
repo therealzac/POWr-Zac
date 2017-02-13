@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react';
 import $ from 'jquery';
+import actions from '../actions/index'
 
 
 const Signup = React.createClass({
@@ -37,15 +38,7 @@ const mapStateToProps = ( state, props ) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signup: (signupData) => {
-      $.ajax({
-        url: '/register/',
-        method: 'POST',
-        data: signupData
-      }).done((response) => {
-        console.log(response)
-      }).fail((error) => {
-        console.log(error)
-      })
+      actions.signUp(signUpData)
     }
   };
 }
