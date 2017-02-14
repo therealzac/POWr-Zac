@@ -18,10 +18,10 @@ export function beginLogin() {
   return { type: types.MANUAL_LOGIN_USER };
 }
 
-export function loginSuccess(message) {
+export function loginSuccess(data) {
   return {
     type: types.LOGIN_SUCCESS_USER,
-    message
+    data
   };
 }
 
@@ -44,10 +44,10 @@ export function beginSignUp() {
   return { type: types.SIGNUP_USER };
 }
 
-export function signUpSuccess(message) {
+export function signUpSuccess(data) {
   return {
     type: types.SIGNUP_SUCCESS_USER,
-    message
+    data
   };
 }
 
@@ -96,7 +96,7 @@ export function manualLogin(data) {
     return makeUserRequest('post', data, '/login')
       .then(response => {
         if (response.status === 200) {
-          dispatch(loginSuccess(response.data.message));
+          dispatch(loginSuccess(response.data.data));
           dispatch(push('/posts'));
         } else {
           dispatch(loginError(response.data.message));
@@ -115,7 +115,7 @@ export function signUp(data) {
     return makeUserRequest('post', data, '/register')
       .then(response => {
         if (response.status === 201) {
-          dispatch(signUpSuccess(response.data.message));
+          dispatch(signUpSuccess(response.data.data));
           dispatch(push('/posts'));
         } else {
           dispatch(signUpError(response.data.message));

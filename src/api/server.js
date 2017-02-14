@@ -52,7 +52,7 @@ figlet(introAscii,{font:asciiFont})
       app.post('/register', (req, res, next)  => {
         return authHelpers.createUser(req, res)
         .then((response) => {
-            handleResponse(res, 201, 'success');
+            handleResponse(res, 201, 'success', response);
           })
         .catch((err) => { console.log(err); handleResponse(res, 500, 'error'); });
       });
@@ -64,7 +64,7 @@ figlet(introAscii,{font:asciiFont})
           if (!authHelpers.comparePass(req.body.Password, user.password)) {
             handleResponse(res, 404, 'Wrong credentials');
           } else {
-            return handleResponse(res, 200, 'success');
+            return handleResponse(res, 200, 'success', user.id);
           }
         })
         .catch((err) => { handleResponse(res, 500, err.message) });
