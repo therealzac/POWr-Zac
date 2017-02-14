@@ -102,7 +102,7 @@ export function signUp(data) {
 
     return makeUserRequest('post', data, '/register')
       .then(response => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           dispatch(signUpSuccess(response.data.message));
           dispatch(push('/posts'));
         } else {

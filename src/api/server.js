@@ -52,11 +52,9 @@ figlet(introAscii,{font:asciiFont})
       app.post('/register', (req, res, next)  => {
         return authHelpers.createUser(req, res)
         .then((response) => {
-          passport.authenticate('local', (err, user, info) => {
-            if (user) { handleResponse(res, 201, 'success'); }
-          })(req, res, next);
-        })
-        .catch((err) => { handleResponse(res, 500, 'error'); });
+            handleResponse(res, 201, 'success');
+          })
+        .catch((err) => { console.log(err); handleResponse(res, 500, 'error'); });
       });
 
       app.post('/login', (req, res, next) => {
