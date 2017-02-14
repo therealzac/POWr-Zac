@@ -59,19 +59,6 @@ figlet(introAscii,{font:asciiFont})
         .catch((err) => { handleResponse(res, 500, 'error'); });
       });
 
-      // app.post('/login', (req, res, next) => {
-      //   passport.authenticate('local', (err, user, info) => {
-      //     if (err) { handleResponse(res, 500, 'error'); }
-      //     if (!user) { handleResponse(res, 404, 'User not found'); }
-      //     if (user) {
-      //       req.logIn(user, function (err) {
-      //         if (err) { handleResponse(res, 500, 'error'); }
-      //         handleResponse(res, 200, 'success');
-      //       });
-      //     }
-      //   })(req, res, next);
-      // });
-
       app.post('/login', (req, res, next) => {
         models.User.find({ where: { email: req.body.Email } })
         .then((user) => {
@@ -88,6 +75,14 @@ figlet(introAscii,{font:asciiFont})
       app.get('/logout', (req, res, next) => {
         req.logout();
         handleResponse(res, 200, 'success');
+      });
+
+      app.post('/posts', (req, res, next) => {
+        models.Post.create({ user_id: req.user.id, body: req.body.currentPost })
+        .then((post) => {
+            return handleResponse(res, 201, 'success');
+        })
+        .catch((err) => { handleResponse(res, 500, err.message) });
       });
 
       function handleResponse(res, code, statusMsg) {

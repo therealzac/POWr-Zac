@@ -31,6 +31,8 @@ import {
 import App                   from 'Components/Application'
 import Login                 from 'Components/Login'
 import Signup                from 'Components/Signup'
+import Posts                 from 'Components/Posts'
+
 const configureStore = require('./utils/configureStore')
 
 const store = configureStore({}, browserHistory);
@@ -50,6 +52,7 @@ render(
       <Route path="/" component={App}>
         <IndexRoute component={Login}/>
         <Route path="/signup" component={Signup}/>
+        <Route path="/posts" component={Posts}/>
       </Route>
     </Router>
   </Provider>,

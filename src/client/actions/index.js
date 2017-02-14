@@ -64,9 +64,18 @@ export function logoutError() {
   return { type: types.LOGOUT_ERROR_USER };
 }
 
-export function toggleLoginMode() {
-  return { type: types.TOGGLE_LOGIN_MODE };
+export function beginCreatePost() {
+  return { type: types.CREATE_POST};
 }
+
+export function createPostSuccess() {
+  return { type: types.CREATE_POST_SUCCESS };
+}
+
+export function createPostError() {
+  return { type: types.CREATE_POST_ERROR };
+}
+
 
 export function manualLogin(data) {
   return dispatch => {
@@ -116,6 +125,21 @@ export function logOut() {
           dispatch(logoutSuccess());
         } else {
           dispatch(logoutError());
+        }
+      });
+  };
+}
+
+export function createPost() {
+  return dispatch => {
+    dispatch(beginCreatePost());
+
+    return makeUserRequest('post', null, '/posts')
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(createPostSuccess());
+        } else {
+          dispatch(createPostError());
         }
       });
   };

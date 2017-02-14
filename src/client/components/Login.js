@@ -18,6 +18,11 @@ const Login = React.createClass({
   goToSignup() {
     browserHistory.push('/signup')
   },
+  componentWillUpdate() {
+    if (this.props.user.authenticated) {
+      browserHistory.push('/posts')
+    }
+  },
   render() {
     return (
       <div>
