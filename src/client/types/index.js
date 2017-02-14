@@ -20,6 +20,10 @@ export const CREATE_POST = 'CREATE_POST';
 export const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS';
 export const CREATE_POST_ERROR = 'CREATE_POST_ERROR';
 
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
+export const GET_POSTS_ERROR = 'GET_POSTS_ERROR';
+
 export const TYPING = 'TYPING';
 
 export const TOGGLE_LOGIN_MODE = 'TOGGLE_LOGIN_MODE';

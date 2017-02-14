@@ -87,6 +87,18 @@ figlet(introAscii,{font:asciiFont})
         res.status(code).json({message: statusMsg});
       }
 
+      app.post('/get', (req, res, next) => {
+        models.Post.all()
+        .then((posts) => {
+            return handleResponse(res, 201, 'success');
+        })
+        .catch((err) => { handleResponse(res, 500, err.message) });
+      });
+
+      function handleResponse(res, code, statusMsg) {
+        res.status(code).json({message: statusMsg});
+      }
+
       app.use(function(req,res,next){
         res.send(JSON.stringify({
           error: middlwareError

@@ -76,6 +76,18 @@ export function createPostError() {
   return { type: types.CREATE_POST_ERROR };
 }
 
+export function beginGetPosts() {
+  return { type: types.GET_POSTS };
+}
+
+export function getPostsSuccess() {
+  return { type: types.GET_POSTS_SUCCESS };
+}
+
+export function getPostsError() {
+  return { type: types.GET_POSTS_ERROR };
+}
+
 
 export function manualLogin(data) {
   return dispatch => {
@@ -137,10 +149,26 @@ export function createPost() {
 
     return makeUserRequest('post', null, '/posts')
       .then(response => {
-        if (response.status === 200) {
+        if (response.status === 201) {
           dispatch(createPostSuccess());
         } else {
           dispatch(createPostError());
+        }
+      });
+  };
+}
+
+
+export function getPosts() {
+  return dispatch => {
+    dispatch(beginGetPosts());
+
+    return makeUserRequest('get', null, '/posts')
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(getPostsSuccess());
+        } else {
+          dispatch(getPostsError());
         }
       });
   };
