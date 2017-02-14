@@ -80,12 +80,12 @@ export function beginGetPosts() {
   return { type: types.GET_POSTS };
 }
 
-export function getPostsSuccess() {
-  return { type: types.GET_POSTS_SUCCESS };
+export function getPostsSuccess(data) {
+  return { type: types.GET_POSTS_SUCCESS, data: data };
 }
 
-export function getPostsError() {
-  return { type: types.GET_POSTS_ERROR };
+export function getPostsError(message) {
+  return { type: types.GET_POSTS_ERROR, message: message };
 }
 
 
@@ -99,7 +99,7 @@ export function manualLogin(data) {
           dispatch(loginSuccess(response.data.message));
           dispatch(push('/posts'));
         } else {
-          dispatch(loginError('Oops! Something went wrong!'));
+          dispatch(loginError(response.data.message));
         }
       })
       .catch(err => {
@@ -118,7 +118,7 @@ export function signUp(data) {
           dispatch(signUpSuccess(response.data.message));
           dispatch(push('/posts'));
         } else {
-          dispatch(signUpError('Oops! Something went wrong'));
+          dispatch(signUpError(response.data.message));
         }
       })
       .catch(err => {
@@ -166,9 +166,9 @@ export function getPosts() {
     return makeUserRequest('get', null, '/posts')
       .then(response => {
         if (response.status === 200) {
-          dispatch(getPostsSuccess());
+          dispatch(getPostsSuccess(response.data.data));
         } else {
-          dispatch(getPostsError());
+          dispatch(getPostsError(response.data.message));
         }
       });
   };

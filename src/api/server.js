@@ -87,16 +87,16 @@ figlet(introAscii,{font:asciiFont})
         res.status(code).json({message: statusMsg});
       }
 
-      app.post('/get', (req, res, next) => {
+      app.get('/posts', (req, res, next) => {
         models.Post.all()
         .then((posts) => {
-            return handleResponse(res, 201, 'success');
+            return handleResponse(res, 200, 'success', posts);
         })
         .catch((err) => { handleResponse(res, 500, err.message) });
       });
 
-      function handleResponse(res, code, statusMsg) {
-        res.status(code).json({message: statusMsg});
+      function handleResponse(res, code, statusMsg, data) {
+        res.status(code).json({message: statusMsg, data: data});
       }
 
       app.use(function(req,res,next){
