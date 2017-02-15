@@ -24,6 +24,11 @@ export const GET_POSTS = 'GET_POSTS';
 export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
 export const GET_POSTS_ERROR = 'GET_POSTS_ERROR';
 
+export const GET_USER_DATA = 'GET_USER_DATA';
+export const GET_USER_DATA_SUCCESS = 'GET_USER_DATA_SUCCESS';
+export const GET_USER_DATA_ERROR = 'GET_USER_DATA_ERROR';
+
+
 export const TYPING = 'TYPING';
 
 export const TOGGLE_LOGIN_MODE = 'TOGGLE_LOGIN_MODE';

@@ -88,6 +88,18 @@ export function getPostsError(message) {
   return { type: types.GET_POSTS_ERROR, message: message };
 }
 
+export function beginGetUserData() {
+  return { type: types.GET_USER_DATA };
+}
+
+export function getUserDataSuccess(data) {
+  return { type: types.GET_USER_DATA_SUCCESS, data: data };
+}
+
+export function getUserDataError(message) {
+  return { type: types.GET_USER_DATA_ERROR, message: message };
+}
+
 
 export function manualLogin(data) {
   return dispatch => {
@@ -150,7 +162,6 @@ export function createPost(data) {
     return makeUserRequest('post', data, '/api/posts')
       .then(response => {
         if (response.status === 201) {
-          console.log(response)
           dispatch(createPostSuccess(response.data.data));
         } else {
           dispatch(createPostError());
@@ -167,10 +178,24 @@ export function getPosts() {
     return makeUserRequest('get', null, '/api/posts')
       .then(response => {
         if (response.status === 200) {
-          console.log(response)
           dispatch(getPostsSuccess(response.data.data));
         } else {
           dispatch(getPostsError(response.data.message));
+        }
+      });
+  };
+}
+
+export function getUserData() {
+  return dispatch => {
+    dispatch(beginGetUserData());
+
+    return makeUserRequest('get', null, '/api/users')
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(getUserDataSuccess(response.data.data));
+        } else {
+          dispatch(getUserDataError(response.data.message));
         }
       });
   };

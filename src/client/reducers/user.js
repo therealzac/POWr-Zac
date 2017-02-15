@@ -26,6 +26,7 @@ const user_data = (
   switch (action.type) {
     case types.LOGIN_SUCCESS_USER:
     case types.SIGNUP_SUCCESS_USER:
+    case types.GET_USER_DATA_SUCCESS:
       return action.data;
     case types.LOGIN_ERROR_USER:
     case types.SIGNUP_ERROR_USER:
