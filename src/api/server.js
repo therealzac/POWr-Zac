@@ -76,9 +76,9 @@ figlet(introAscii,{font:asciiFont})
       });
 
       app.post('/posts', (req, res, next) => {
-        models.Post.create({ user_id: req.user.id, body: req.body.currentPost })
+        models.Post.create({ user_id: req.body.user_id, body: req.body.body })
         .then((post) => {
-            return handleResponse(res, 201, 'success');
+            return handleResponse(res, 201, 'success', post);
         })
         .catch((err) => { handleResponse(res, 500, err.message) });
       });

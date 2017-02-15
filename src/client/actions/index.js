@@ -68,12 +68,12 @@ export function beginCreatePost() {
   return { type: types.CREATE_POST};
 }
 
-export function createPostSuccess() {
-  return { type: types.CREATE_POST_SUCCESS };
+export function createPostSuccess(data) {
+  return { type: types.CREATE_POST_SUCCESS, data: data };
 }
 
-export function createPostError() {
-  return { type: types.CREATE_POST_ERROR };
+export function createPostError(message) {
+  return { type: types.CREATE_POST_ERROR, message: message };
 }
 
 export function beginGetPosts() {
@@ -143,14 +143,15 @@ export function logOut() {
   };
 }
 
-export function createPost() {
+export function createPost(data) {
   return dispatch => {
     dispatch(beginCreatePost());
 
-    return makeUserRequest('post', null, '/posts')
+    return makeUserRequest('post', data, '/posts')
       .then(response => {
         if (response.status === 201) {
-          dispatch(createPostSuccess());
+          console.log(response)
+          dispatch(createPostSuccess(response.data.data));
         } else {
           dispatch(createPostError());
         }
