@@ -21,8 +21,7 @@ const isFetching = (state = false, action) => {
 const rootReducer = combineReducers({
   isFetching,
   user,
-  posts,
-  routing
+  posts
 });
 
 export default rootReducer;

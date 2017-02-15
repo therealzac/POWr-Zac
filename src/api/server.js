@@ -40,15 +40,6 @@ figlet(introAscii,{font:asciiFont})
         extended:true //see:https://www.npmjs.com/package/body-parser
       }));
 
-      app.get('/', function(req, res) {
-        res.sendFile(path.join(__dirname,"../../dist/index.html"));
-      });
-
-      app.use(serveStatic(path.join(__dirname,"../../dist")));
-
-      app.use(passport.initialize())
-      app.use(passport.session())
-
       app.post('/register', (req, res, next)  => {
         return authHelpers.createUser(req, res)
         .then((response) => {
@@ -75,7 +66,7 @@ figlet(introAscii,{font:asciiFont})
         handleResponse(res, 200, 'success');
       });
 
-      app.post('/posts', (req, res, next) => {
+      app.post('/api/posts', (req, res, next) => {
         models.Post.create({ user_id: req.body.user_id, body: req.body.body })
         .then((post) => {
             return handleResponse(res, 201, 'success', post);
@@ -87,7 +78,7 @@ figlet(introAscii,{font:asciiFont})
         res.status(code).json({message: statusMsg});
       }
 
-      app.get('/posts', (req, res, next) => {
+      app.get('/api/posts', (req, res, next) => {
         models.Post.all()
         .then((posts) => {
             return handleResponse(res, 200, 'success', posts);
@@ -95,15 +86,15 @@ figlet(introAscii,{font:asciiFont})
         .catch((err) => { handleResponse(res, 500, err.message) });
       });
 
+      app.use(function(req, res) {
+        res.sendFile(path.join(__dirname,"../../dist/index.html"));
+      });
+
+      app.use(serveStatic(path.join(__dirname,"../../dist")));
+
       function handleResponse(res, code, statusMsg, data) {
         res.status(code).json({message: statusMsg, data: data});
       }
-
-      app.use(function(req,res,next){
-        res.send(JSON.stringify({
-          error: middlwareError
-        }))
-      });
 
       app.listen(PORT, function () {
         console.log('Server running on port ' + PORT);

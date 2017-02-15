@@ -147,7 +147,7 @@ export function createPost(data) {
   return dispatch => {
     dispatch(beginCreatePost());
 
-    return makeUserRequest('post', data, '/posts')
+    return makeUserRequest('post', data, '/api/posts')
       .then(response => {
         if (response.status === 201) {
           console.log(response)
@@ -164,9 +164,10 @@ export function getPosts() {
   return dispatch => {
     dispatch(beginGetPosts());
 
-    return makeUserRequest('get', null, '/posts')
+    return makeUserRequest('get', null, '/api/posts')
       .then(response => {
         if (response.status === 200) {
+          console.log(response)
           dispatch(getPostsSuccess(response.data.data));
         } else {
           dispatch(getPostsError(response.data.message));
