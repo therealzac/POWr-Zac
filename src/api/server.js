@@ -55,7 +55,7 @@ figlet(introAscii,{font:asciiFont})
           if (!authHelpers.comparePass(req.body.Password, user.password)) {
             handleResponse(res, 404, 'Wrong credentials');
           } else {
-            return handleResponse(res, 200, 'success', user.id);
+            return handleResponse(res, 200, 'success', user);
           }
         })
         .catch((err) => { handleResponse(res, 500, err.message) });
@@ -67,8 +67,12 @@ figlet(introAscii,{font:asciiFont})
       });
 
       app.post('/api/posts', (req, res, next) => {
-        models.Post.create({ user_id: req.body.user_id, body: req.body.body })
-        .then((post) => {
+        console.log(req.body)
+        models.Post.create({
+          user_id: req.body.user_id,
+          user_name: req.body.user_name,
+          body: req.body.body
+        }).then((post) => {
             return handleResponse(res, 201, 'success', post);
         })
         .catch((err) => { handleResponse(res, 500, err.message) });

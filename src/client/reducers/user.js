@@ -19,7 +19,7 @@ const authenticated = (
   }
 };
 
-const user_id = (
+const user_data = (
   state = null,
   action
 ) => {
@@ -60,7 +60,7 @@ const isWaiting = (
 const userReducer = combineReducers({
   isWaiting,
   authenticated,
-  user_id
+  user_data
 });
 
 export default userReducer;
