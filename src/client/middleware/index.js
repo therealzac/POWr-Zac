@@ -9,7 +9,7 @@ const crashReporter = store => next => action => {
   try {
     return next(action)
   } catch (err) {
-    console.error('Blast!', err)
+    console.error('Aw snap!', err)
     throw err
   }
 }

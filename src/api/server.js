@@ -47,6 +47,9 @@ figlet(introAscii,{font:asciiFont})
         saveUninitialized: true
       }))
 
+      // TODO: create discrete routes file with CRUD controllers.
+      // TODO: create a sessions store for more secure session handling.
+
       app.post('/register', (req, res, next)  => {
         return authHelpers.createUser(req, res)
         .then((response) => {
@@ -105,7 +108,7 @@ figlet(introAscii,{font:asciiFont})
           if (!user) {
             handleResponse(res, 404, 'User not found');
           } else {
-            req.session.id = user.id
+            req.session.email = user.email
             return handleResponse(res, 200, 'success', {id: user.id, email: user.email});
           }
         })
